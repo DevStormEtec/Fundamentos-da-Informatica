@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Casa Velha</title>
+    <link rel="icon" href="imagens/Icon.png" type="image/png">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --base-font-size: 16px;
+        }
+        html {
+            scroll-behavior: smooth;
+            font-size: var(--base-font-size);
+        }
+        body {
+            background-color: rgb(255, 245, 224);
+            font-family: 'Times New Roman', Times, serif;
+            position: relative;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s ease;
+            transform-origin: top left;
+        }
+        header {
+            background-color: rgb(54, 33, 23);
+            border-bottom: 5px solid rgb(196, 143, 0);
+            height: 150px;
+        }
+        header h1 {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        #img-topo {
+            background-color: #8C5627;
+        }
+        .text-brown {
+            color: rgb(54, 33, 23);
+        }
+        footer {
+            background-color: rgb(54, 33, 23);
+        }
+        section[id] {
+            scroll-margin-top: 150px;
+        }
+        hr {
+            border: 0;
+            border-top: 2px solid rgba(54, 33, 23, 0.5);
+        }
+
+        /* --- CSS Menu de Acessibilidade Aprimorado --- */
+        .accessibility-fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1050;
+        }
+        .accessibility-button {
+            width: 60px;
+            height: 60px;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+        .accessibility-button:hover {
+            background-color: #005a9e;
+        }
+        .accessibility-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 320px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+            transform: scale(0.95);
+            transform-origin: bottom right;
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out, visibility 0.2s;
+        }
+        .accessibility-menu.show {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+        .accessibility-panel {
+             padding: 10px;
+        }
+        .accessibility-panel ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .accessibility-panel a.menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.2s;
+            border-radius: 6px;
+        }
+        .accessibility-panel a.menu-item:hover {
+            background-color: #e9e9e9;
+        }
+        .accessibility-panel a.menu-item i {
+            width: 20px;
+            text-align: center;
+            color: #0078d4;
+        }
+        .accessibility-panel .menu-item-title {
+            flex-grow: 1;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin-left: auto;
+            transition: background-color 0.3s;
+        }
+        .menu-item.active .status-dot {
+            background-color: #28a745;
+        }
+        .config-header {
+            display: flex;
+            align-items: center;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .back-button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+            color: #555;
+        }
+        .config-header h4 {
+            margin: 0;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .config-option {
+            padding: 10px 5px;
+        }
+        .config-option button, .config-option a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 8px;
+            text-align: left;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        .config-option button {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .config-option a {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .config-option small {
+            font-size: 0.8em;
+            color: #666;
+            margin-left: auto;
+        }
+        .reset-button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* --- Estilos de Alto Contraste --- */
+        body.high-contrast { background-color: #000 !important; color: #fff !important; }
+        body.high-contrast header, body.high-contrast footer { background-color: #111 !important; border-color: #fff !important; }
+        body.high-contrast .text-brown, body.high-contrast h1, body.high-contrast h2 { color: #ffeb3b !important; }
+        body.high-contrast a:not(.text-white) { color: #00ffff !important; }
+        body.high-contrast nav a, body.high-contrast footer { color: #fff !important; }
+        body.high-contrast img { filter: grayscale(100%) contrast(150%); }
+        body.high-contrast hr { border-top: 2px solid #fff; }
+        body.high-contrast #img-topo { background-color: #222; }
+
+        /* --- Guia de Leitura --- */
+        #reading-guide { position: fixed; top: 0; left: 0; width: 100%; height: 35px; background-color: rgba(255, 255, 0, 0.4); border-top: 1px solid #333; border-bottom: 1px solid #333; z-index: 9999; pointer-events: none; display: none; }
+
+        /* --- Cursor Leitor de Texto --- */
+        body.reader-active p, body.reader-active h1, body.reader-active h2, body.reader-active li { cursor: pointer; }
+        body.reader-active p:hover, body.reader-active h1:hover, body.reader-active h2:hover, body.reader-active li:hover { background-color: rgba(0, 120, 212, 0.1); }
+        
+        /* --- Zoom de Tela Cheia --- */
+        body.full-screen-zoom {
+            transform: scale(1.5);
+            overflow: visible;
+        }
+    </style>
+</head>
+<body>
+    <div id="reading-guide"></div>
+
+    <header class="shadow d-flex justify-content-between align-items-center px-5 position-sticky top-0 w-100" style="z-index: 1030;">
+        <h1 class="display-4 fw-bold text-white">Casa Velha</h1>
+        <nav>
+            <p class="m-0">
+                <a href="#inicio" class="text-white text-decoration-none fs-5 px-2">Início</a>
+                <a href="#resumo" class="text-white text-decoration-none fs-5 px-2">Resumo</a>
+                <a href="#genero" class="text-white text-decoration-none fs-5 px-2">Gênero</a>
+                <a href="#bibliografia" class="text-white text-decoration-none fs-5 px-2">Bibliografia</a>
+                <a href="#sobre" class="text-white text-decoration-none fs-5 px-2">Sobre</a>
+            </p>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Conteúdo principal da página continua aqui... -->
+        <section id="inicio">
+            <div id="img-topo" class="text-center p-3">
+                 <img src="imagens/Principal.png" alt="Imagem Principal" class="img-fluid shadow">
+            </div>
+
+            <div class="p-5 container">
+                <h1 class="display-3 fw-bold">Introdução à Obra Casa Velha</h1>
+                <p class="fs-5 text">Casa Velha, escrita por Machado de Assis, é uma obra que reflete as complexidades sociais e morais do Brasil do século XIX. Através de uma narrativa rica em nuances psicológicas e sociais, a história descreve o confronto entre valores familiares, amorosos e as convenções rígidas da época. Ambientada na antiga residência de um ex-ministro, a obra explora as tensões entre personagens de diferentes classes sociais, sendo especialmente marcada pelo dilema vivido por Félix e Lalau, cujos destinos são traçados por uma trama de mentiras e traições.</p>
+                <p class="fs-5">Publicada originalmente entre 1885 e 1886, Casa Velha é considerada uma das principais novelas da fase realista de Machado de Assis, embora com fortes influências do romantismo, característica de sua transição entre esses dois movimentos literários. A obra não apenas destaca-se por sua análise crítica das relações sociais, mas também pela forma como questiona a moralidade e a ética das personagens, desafiando convenções e propondo uma reflexão sobre a verdadeira natureza da honra e do amor.</p>
+                <p class="fs-5">Este site busca apresentar um estudo completo sobre a obra, abordando seu resumo, o contexto literário e histórico, e a biografia de Machado de Assis, além de destacar a importância de Casa Velha dentro da vasta produção do autor.</p>
+            </div>
+        </section>
+
+        <div class="container"><hr class="my-5"></div>
+
+        <section id="resumo" class="container py-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="display-3 fw-bold text-brown">Resumo da Obra</h1>
+                    <p class="fs-5">O narrador, um cônego que deseja escrever sobre o Primeiro Reinado, vai à antiga residência de um ex-ministro — chamada de “Casa Velha” — para consultar documentos na biblioteca. Ao ser acolhido por D. Antônia, viúva do ministro, acaba se tornando íntimo da família, especialmente de seu filho, Félix, e da jovem agregada Lalau, órfã sob os cuidados da matriarca.</p>
+                    <p class="fs-5">Nessa convivência, o cônego percebe uma afeição crescente entre Lalau, descrita como encantadora e angelical, e Félix, e instiga esse sentimento, acreditando que a união seria justa. No entanto, D. Antônia, representante de convenções sociais rígidas, opõe-se ao relacionamento por causa da diferença de posição social — Félix é herdeiro, enquanto Lalau é apenas uma agregada à família.</p>
+                    <p class="fs-5">Sem esperança de mudança, D. Antônia emprega duas estratégias: primeiro, sugere que o cônego acompanhe Félix à Europa sob pretexto de aperfeiçoamento; depois, cria um obstáculo mais cruel: inventa que Lalau seria filha do falecido ministro, tornando-a irmã de Félix e fazendo o casamento ser moralmente impossível.</p>
+                    <p class="fs-5">Convencido, o cônego confessa esse "fato" a Félix e a Lalau, o que os envolve em profunda angústia. Ainda assim, por meio da tia de Lalau, o cônego descobre que tudo não passa de uma mentira: o ministro teve sim um filho fora do casamento, mas esse bebê morreu muito cedo, e Lalau não era sua filha.</p>
+                    <p class="fs-5">D. Antônia então admite a farsa, dizendo que, ao se dar conta da falsidade, deveria pagar uma “penalidade”: primeiro, descobrir-se traída; depois, permitir que Félix e Lalau se casassem. Num momento de esperança, o cônego leva a notícia ao casal — mas, para sua surpresa, mesmo sabendo da verdade, Lalau e Félix recusam-se a ficar juntos.</p>
+                    <p class="fs-5">Lalau, magoada com a família e envergonhada, acredita que seria indigno unir-se ao filho de quem manchou a honra de sua mãe — mesmo em segredo. Félix, por sua vez, resigna-se à dor e, com dignidade, segue outro rumo. Eles acabam se casando com outras pessoas — Lalau com um homem modesto e honesto, e Félix com Sinhazinha — preservando assim sua dignidade e pureza moral.</p>
+                    <p class="fs-5 fst-italic">“Se ele e Lalau foram felizes, não sei; mas foram honestos, e basta.”</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <img src="imagens/CasaVelha.png" alt="Resumo Casa Velha" class="img-fluid shadow rounded-3">
+                </div>
+            </div>
+        </section>
+
+        <div class="container"><hr class="my-5"></div>
+
+        <section id="genero" class="container py-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="display-3 fw-bold text-brown">Gênero Literário e Período</h1>
+                    <p class="fs-5">"Casa Velha" é considerada uma novela ou romance curto (também chamada de “conto grande”) — um tipo de narrativa mais longa que um conto, mas mais concisa que um romance clássico — publicada originalmente em forma de folhetim entre 1885 e 1886 na revista A Estação.</p>
+                    <p class="fs-5">Em relação ao movimento literário, a obra é atribuída à fase realista de Machado de Assis, embora contenha muitos traços românticos, o que a coloca como uma espécie de obra de transição entre as duas fases.</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <img src="imagens/CasaVelha2.png" alt="Genero Casa Velha" class="img-fluid shadow rounded-3">
+                </div>
+            </div>
+        </section>
+
+        <div class="container"><hr class="my-5"></div>
+
+        <section id="bibliografia" class="container py-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="display-3 fw-bold text-brown">Breve biografia do autor</h1>
+                    <p class="fs-5">Joaquim Maria Machado de Assis (1839-1908) foi um dos maiores escritores brasileiros, considerado o fundador da literatura nacional moderna. Nascido no Rio de Janeiro em 1839, filho de um pintor e de uma lavadeira, Machado superou as adversidades sociais e educacionais da época para se tornar um dos autores mais influentes do Brasil.</p>
+                    <p class="fs-5">Sua obra é marcada por uma profunda análise psicológica dos personagens e um estilo irônico e inovador, que rompeu com o romantismo para introduzir o realismo no país. Entre suas principais obras estão Dom Casmurro, Memórias Póstumas de Brás Cubas e Quincas Borba.</p>
+                    <p class="fs-5">Além de escritor, Machado foi poeta, cronista, contista e dramaturgo. Também teve papel fundamental na Academia Brasileira de Letras, da qual foi um dos fundadores e presidente até sua morte, em 1908. Sua contribuição para a literatura ultrapassa fronteiras, sendo estudado e admirado mundialmente pela complexidade e modernidade de sua visão.</p>
+                    
+                    <h2 class="display-4 fw-bold text-brown mt-5">Obras que fizeram referência a sua obra Casa Velha</h2>
+                    <p class="fs-5">A principal é a coletânea <strong>Relíquias de Casa Velha (1906)</strong>, cujo título retoma diretamente a obra, evocando a ideia de memória e passado. Dentro dela, contos como “Pai contra mãe” trazem reflexões sociais que dialogam com o espírito crítico já presente em Casa Velha.</p>
+    
+                    <h1 class="display-4 fw-bold text-brown mt-5">Suas Principais Obras por Gênero</h1>
+    
+                    <h2 class="display-5 fw-bold text-brown mt-5">Romances</h2>
+                    <ul class="fs-5">
+                        <li>Ressurreição (1872)</li>
+                        <li>A Mão e a Luva (1874)</li>
+                        <li>Helena (1876)</li>
+                        <li>Iaiá Garcia (1878)</li>
+                        <li>Memórias Póstumas de Brás Cubas (1881) — frequentemente considerada o marco inicial do realismo no Brasil</li>
+                        <li>Casa Velha (1885)</li>
+                        <li>Quincas Borba (1891)</li>
+                        <li>Dom Casmurro (1899)</li>
+                        <li>Esaú e Jacó (1904)</li>
+                        <li>Memorial de Aires (1908) — seu último romance, escrito na forma de diário</li>
+                    </ul>
+    
+                    <h2 class="display-5 fw-bold text-brown mt-5">Coletâneas de Contos e Miscelâneas</h2>
+                    <ul class="fs-5">
+                        <li>Contos Fluminenses (1870)</li>
+                        <li>Histórias da Meia-Noite (1873)</li>
+                        <li>Papéis Avulsos (1882)</li>
+                        <li>Histórias sem Data (1884)</li>
+                        <li>Várias Histórias (1896)</li>
+                        <li>Páginas Recolhidas (1899)</li>
+                        <li>Relíquias de Casa Velha (1906) — reúne contos, poemas, peças e críticas, e carrega um forte sentido de nostalgia</li>
+                    </ul>
+    
+                    <h2 class="display-5 fw-bold text-brown mt-5">Poesia</h2>
+                    <ul class="fs-5">
+                        <li>Crisálidas (1864)</li>
+                        <li>Falenas (1870)</li>
+                        <li>Americanas (1875) — traz retratos femininos com tom romântico</li>
+                        <li>Ocidentais (1901)</li>
+                        <li>Poesias Completas (1901) — reúne seus livros de poemas anteriores, incluindo o inédito Ocidentais</li>
+                    </ul>
+    
+                    <h2 class="display-5 fw-bold text-brown mt-5">Peças de Teatro</h2>
+                    <ul class="fs-5">
+                        <li>Hoje Avental, Amanhã Luva (1860)</li>
+                        <li>Desencantos (1861)</li>
+                        <li>O Caminho da Porta e O Protocolo (1863)</li>
+                        <li>Quase Ministro (1864)</li>
+                        <li>Os Deuses de Casaca (1866)</li>
+                        <li>Tu, só tu, puro amor… (1880)</li>
+                        <li>O Bote de Rapé (1878)</li>
+                        <li>Não Consultes Médico (1896)</li>
+                        <li>Lição de Botânica (1906)</li>
+                        <li>As Forças Caudinas (publicada postumamente em 1956)</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <img src="imagens/MachadoDeAssis.png" alt="Machado de Assis" class="img-fluid shadow rounded-3">
+                </div>
+            </div>
+        </section>
+
+        <div class="container"><hr class="my-5"></div>
+
+        <section id="sobre" class="container py-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="display-5 fw-bold text-brown">Alunos:</h1>
+                    <p class="fs-5"> Otávio Giovanelli Biazzi.</p>
+                    <p class="fs-5"> Pedro Henrique Miranda.</p>
+                    <h1 class="display-5 fw-bold text-brown mt-5">Professores:</h1>
+                    <p class="fs-5">Cristiane Fernandes.</p>
+                    <p class="fs-5">Ronildo Aparecido Ferreira.</p>
+                    <h1 class="display-5 fw-bold text-brown mt-5">Série:</h1>
+                    <p class="fs-5">1°D.</p>
+                    <h1 class="display-5 fw-bold text-brown mt-5">Referências:</h1>
+                    <ul class="fs-5">
+                        <li>ASSIS, Machado de. Casa Velha. Disponível em: <a href="https://pt.wikipedia.org/wiki/Casa_Velha" target="_blank">https://pt.wikipedia.org/wiki/Casa_Velha</a>. Acesso em: 15 set. 2025.</li>
+                        <li>MACHADO DE ASSIS. Academia Brasileira de Letras – Biografia. Disponível em: <a href="https://www.academia.org.br/academicos/machado-de-assis/biografia" target="_blank">https://www.academia.org.br/academicos/machado-de-assis/biografia</a>. Acesso em: 15 set. 2025.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center text-white p-3 mt-5">Desenvolvido por Otávio Giovanelli Biazzi e Pedro Henrique Miranda</footer>
+
+    <!-- Botão e Menu de Acessibilidade -->
+    <div class="accessibility-fab">
+        <div id="accessibility-menu" class="accessibility-menu">
+
+            <!-- Painel Principal -->
+            <div id="main-menu" class="accessibility-panel">
+                <ul>
+                    <li><a href="#" class="menu-item" data-panel="font-config"><i class="fas fa-text-height"></i> <span class="menu-item-title">Tamanho da Fonte</span> <i class="fas fa-chevron-right"></i></a></li>
+                    <li><a href="#" class="menu-item" data-panel="magnifier-config"><i class="fas fa-search-plus"></i> <span class="menu-item-title">Zoom da Página</span> <span class="status-dot"></span> <i class="fas fa-chevron-right"></i></a></li>
+                    <li><a href="#" class="menu-item" data-panel="contrast-config"><i class="fas fa-adjust"></i> <span class="menu-item-title">Alto Contraste</span> <span class="status-dot"></span> <i class="fas fa-chevron-right"></i></a></li>
+                    <li><a href="#" class="menu-item" data-panel="guide-config"><i class="fas fa-ruler-horizontal"></i> <span class="menu-item-title">Guia de Leitura</span> <span class="status-dot"></span> <i class="fas fa-chevron-right"></i></a></li>
+                    <li><a href="#" class="menu-item" data-panel="narrator-config"><i class="fas fa-bullhorn"></i> <span class="menu-item-title">Narrador</span> <span class="status-dot"></span> <i class="fas fa-chevron-right"></i></a></li>
+                    <li><a href="#" class="menu-item" data-panel="windows-shortcuts"><i class="fab fa-windows"></i> <span class="menu-item-title">Atalhos do Windows</span> <i class="fas fa-chevron-right"></i></a></li>
+                </ul>
+                <button id="reset-all" class="reset-button">Redefinir Tudo</button>
+            </div>
+            
+            <!-- Painéis de Configuração -->
+            <div id="font-config" class="accessibility-panel" style="display: none;">
+                <div class="config-header"><button class="back-button"><i class="fas fa-arrow-left"></i></button> <h4>Tamanho da Fonte</h4></div>
+                <div class="config-option"><button id="increase-font"><i class="fas fa-plus"></i> Aumentar Fonte</button></div>
+                <div class="config-option"><button id="decrease-font"><i class="fas fa-minus"></i> Diminuir Fonte</button></div>
+            </div>
+            
+            <div id="magnifier-config" class="accessibility-panel" style="display: none;">
+                <div class="config-header"><button class="back-button"><i class="fas fa-arrow-left"></i></button> <h4>Zoom da Página</h4></div>
+                <div class="config-option"><button id="toggle-magnifier">Ativar Zoom no Site</button></div>
+            </div>
+
+            <div id="contrast-config" class="accessibility-panel" style="display: none;">
+                <div class="config-header"><button class="back-button"><i class="fas fa-arrow-left"></i></button> <h4>Alto Contraste</h4></div>
+                <div class="config-option"><button id="toggle-contrast">Ativar Alto Contraste no Site</button></div>
+            </div>
+            
+            <div id="guide-config" class="accessibility-panel" style="display: none;">
+                <div class="config-header"><button class="back-button"><i class="fas fa-arrow-left"></i></button> <h4>Guia de Leitura</h4></div>
+                <div class="config-option"><button id="toggle-guide">Ativar Guia de Leitura</button></div>
+            </div>
+            
+            <div id="narrator-config" class="accessibility-panel" style="display: none;">
+                <div class="config-header"><button class="back-button"><i class="fas fa-arrow-left"></i></button> <h4>Narrador</h4></div>
+                <div class="config-option"><button id="toggle-reader">Ativar Narrador no Site</button></div>
+            </div>
+
+            <div id="windows-shortcuts" class="accessibility-panel" style="display: none;">
+                <div class="config-header"><button class="back-button"><i class="fas fa-arrow-left"></i></button> <h4>Atalhos do Windows</h4></div>
+                <div class="config-option"><a href="ms-settings:easeofaccess-display" target="_blank"><i class="fas fa-desktop"></i> Tela</a></div>
+                <div class="config-option"><a href="ms-settings:easeofaccess-magnifier" target="_blank"><i class="fas fa-search-plus"></i> Lupa</a></div>
+                <div class="config-option"><a href="ms-settings:easeofaccess-colorfilter" target="_blank"><i class="fas fa-palette"></i> Filtros de Cor</a></div>
+                <div class="config-option"><a href="ms-settings:easeofaccess-highcontrast" target="_blank"><i class="fas fa-adjust"></i> Alto Contraste</a></div>
+                <div class="config-option"><a href="ms-settings:easeofaccess-narrator" target="_blank"><i class="fas fa-volume-up"></i> Narrador</a></div>
+                <div class="config-option"><a href="ms-settings:easeofaccess-audio" target="_blank"><i class="fas fa-music"></i> Áudio</a></div>
+                <div class="config-option"><a href="ms-settings:easeofaccess-keyboard" target="_blank"><i class="fas fa-keyboard"></i> Teclado</a></div>
+                <div class="config-option"><a href="ms-settings:easeofaccess-mouse" target="_blank"><i class="fas fa-mouse"></i> Mouse</a></div>
+            </div>
+
+        </div>
+        <button id="accessibility-btn" class="accessibility-button" aria-label="Abrir menu de acessibilidade">
+            <i class="fas fa-universal-access"></i>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Elementos do DOM ---
+            const accessibilityBtn = document.getElementById('accessibility-btn');
+            const accessibilityMenu = document.getElementById('accessibility-menu');
+            const panels = document.querySelectorAll('.accessibility-panel');
+            const menuItems = document.querySelectorAll('.menu-item[data-panel]');
+            const backButtons = document.querySelectorAll('.back-button');
+            const htmlEl = document.documentElement;
+            const bodyEl = document.body;
+
+            // --- Estado das Ferramentas ---
+            let states = {
+                magnifier: false,
+                contrast: false,
+                guide: false,
+                reader: false
+            };
+
+            // --- Funções de Navegação do Menu ---
+            const showPanel = (panelId) => {
+                panels.forEach(p => p.style.display = 'none');
+                document.getElementById(panelId).style.display = 'block';
+            };
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showPanel(item.dataset.panel);
+                });
+            });
+
+            backButtons.forEach(button => {
+                button.addEventListener('click', () => showPanel('main-menu'));
+            });
+
+            // Abrir/Fechar Menu Principal
+            accessibilityBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                accessibilityMenu.classList.toggle('show');
+            });
+            document.addEventListener('click', () => {
+                if (accessibilityMenu.classList.contains('show')) {
+                    accessibilityMenu.classList.remove('show');
+                }
+            });
+            accessibilityMenu.addEventListener('click', e => e.stopPropagation());
+
+            // --- Funções de Ferramentas de Acessibilidade ---
+
+            // 1. Tamanho da Fonte
+            document.getElementById('increase-font').addEventListener('click', () => {
+                let currentSize = parseFloat(getComputedStyle(htmlEl).fontSize);
+                if (currentSize < 24) htmlEl.style.fontSize = (currentSize + 1) + 'px';
+            });
+            document.getElementById('decrease-font').addEventListener('click', () => {
+                let currentSize = parseFloat(getComputedStyle(htmlEl).fontSize);
+                if (currentSize > 10) htmlEl.style.fontSize = (currentSize - 1) + 'px';
+            });
+
+            // 2. Zoom de Tela Cheia
+            const toggleMagnifierBtn = document.getElementById('toggle-magnifier');
+            toggleMagnifierBtn.addEventListener('click', () => {
+                states.magnifier = !states.magnifier;
+                bodyEl.classList.toggle('full-screen-zoom', states.magnifier);
+                toggleMagnifierBtn.innerHTML = states.magnifier ? '<i class="fas fa-search-minus"></i> Desativar Zoom' : '<i class="fas fa-search-plus"></i> Ativar Zoom no Site';
+                document.querySelector('[data-panel="magnifier-config"]').classList.toggle('active', states.magnifier);
+            });
+
+            // 3. Alto Contraste
+            const toggleContrastBtn = document.getElementById('toggle-contrast');
+            toggleContrastBtn.addEventListener('click', () => {
+                states.contrast = !states.contrast;
+                bodyEl.classList.toggle('high-contrast', states.contrast);
+                toggleContrastBtn.innerHTML = states.contrast ? '<i class="fas fa-times"></i> Desativar Contraste' : '<i class="fas fa-adjust"></i> Ativar Alto Contraste';
+                document.querySelector('[data-panel="contrast-config"]').classList.toggle('active', states.contrast);
+            });
+
+            // 4. Guia de Leitura
+            const guide = document.getElementById('reading-guide');
+            const toggleGuideBtn = document.getElementById('toggle-guide');
+            const moveGuide = (e) => guide.style.top = `${e.clientY - (guide.offsetHeight / 2)}px`;
+            toggleGuideBtn.addEventListener('click', () => {
+                states.guide = !states.guide;
+                guide.style.display = states.guide ? 'block' : 'none';
+                toggleGuideBtn.innerHTML = states.guide ? '<i class="fas fa-times"></i> Desativar Guia' : '<i class="fas fa-ruler-horizontal"></i> Ativar Guia de Leitura';
+                document.querySelector('[data-panel="guide-config"]').classList.toggle('active', states.guide);
+                if (states.guide) document.addEventListener('mousemove', moveGuide);
+                else document.removeEventListener('mousemove', moveGuide);
+            });
+
+            // 5. Narrador (Leitor de Texto)
+            const synth = window.speechSynthesis;
+            const toggleReaderBtn = document.getElementById('toggle-reader');
+            const speak = (text) => {
+                if (synth.speaking) synth.cancel();
+                if (text) {
+                     const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'pt-BR';
+                    synth.speak(utterance);
+                }
+            };
+            const handleTextClick = (e) => {
+                const target = e.target.closest('p, h1, h2, li');
+                if (states.reader && target) speak(target.textContent);
+            };
+            toggleReaderBtn.addEventListener('click', () => {
+                states.reader = !states.reader;
+                bodyEl.classList.toggle('reader-active', states.reader);
+                toggleReaderBtn.innerHTML = states.reader ? '<i class="fas fa-times"></i> Desativar Narrador' : '<i class="fas fa-bullhorn"></i> Ativar Narrador no Site';
+                document.querySelector('[data-panel="narrator-config"]').classList.toggle('active', states.reader);
+                if (states.reader) document.addEventListener('click', handleTextClick);
+                else {
+                    synth.cancel();
+                    document.removeEventListener('click', handleTextClick);
+                }
+            });
+
+            // 6. Redefinir Tudo
+            document.getElementById('reset-all').addEventListener('click', () => {
+                // Resetar fonte
+                htmlEl.style.fontSize = 'var(--base-font-size)';
+                
+                // Desativar Zoom
+                if(states.magnifier) toggleMagnifierBtn.click();
+                
+                // Desativar Contraste
+                if(states.contrast) toggleContrastBtn.click();
+
+                // Desativar Guia
+                if(states.guide) toggleGuideBtn.click();
+                
+                // Desativar Narrador
+                if(states.reader) toggleReaderBtn.click();
+                
+                // Voltar ao menu principal
+                showPanel('main-menu');
+            });
+        });
+    </script>
+</body>
+</html>
